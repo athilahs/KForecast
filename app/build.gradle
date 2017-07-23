@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+android {
+  compileSdkVersion 25
+  buildToolsVersion "25.0.2"
+  defaultConfig {
+    applicationId "athila.kforecast"
+    minSdkVersion 15
+    targetSdkVersion 25
+    versionCode 1
+    versionName "1.0"
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    buildConfigField("String", "FORECAST_HOST", "\"https://api.darksky.net/\"")
+
+    // For vector drawables in support library
+    vectorDrawables.useSupportLibrary = true
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+kapt {
+  generateStubs = true
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  compile 'com.android.support:appcompat-v7:25.4.0'
+  testCompile 'junit:junit:4.12'
+  compile 'com.android.support.constraint:constraint-layout:1.0.2'
+  compile 'com.android.support:design:25.4.0'
+
+  // Retrofit
+  compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  compile("com.squareup.retrofit2:retrofit:$retrofitVersion") {
+    // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
+    exclude module: 'okhttp'
+  }
+  compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  //  compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+  compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+  // Room
+  compile "android.arch.persistence.room:runtime:1.0.0-alpha5"
+  kapt "android.arch.persistence.room:compiler:1.0.0-alpha5"
+
+  // RxJava
+  compile 'io.reactivex.rxjava2:rxkotlin:2.0.3'
+  compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+
+  // Dagger
+  compile 'com.google.dagger:dagger:2.8'
+  kapt 'com.google.dagger:dagger-compiler:2.8'
+}
