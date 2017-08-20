@@ -16,6 +16,7 @@ import athila.kforecast.forecast.model.Forecast
 import athila.kforecast.forecast.utils.ForecastUtils
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
+import javax.inject.Inject
 
 class ForecastView(context: Context) : ForecastContract.View, BaseView(context) {
 
@@ -28,12 +29,12 @@ class ForecastView(context: Context) : ForecastContract.View, BaseView(context) 
   val refreshButton: ImageView by bindView(R.id.forecast_screen_app_bar_button_refresh)
   val progressView: ContentLoadingProgressBar by bindView(R.id.forecast_screen_app_bar_progress)
 
-  val forecastAdapter: ForecastAdapter
+  @Inject
+  lateinit var forecastAdapter: ForecastAdapter
 
   init {
     inflate(context, R.layout.view_forecast, this)
     forecastList.setHasFixedSize(true)
-    forecastAdapter = ForecastAdapter(context)
     forecastList.adapter = forecastAdapter
     forecastList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
   }
@@ -68,7 +69,7 @@ class ForecastView(context: Context) : ForecastContract.View, BaseView(context) 
     currentConditionsSummary.text = currentConditions?.summary
     currentConditionsTemperature.text = context.getString(R.string.temperature, currentConditions?.temperature)
 
-    forecastAdapter.setForecast(forecast)
+    forecastAdapter.forecast = forecast
   }
 
   override fun getView(): View = this

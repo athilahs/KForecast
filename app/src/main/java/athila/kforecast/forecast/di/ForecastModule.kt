@@ -1,6 +1,7 @@
 package athila.kforecast.forecast.di
 
 import android.content.Context
+import athila.kforecast.app.di.ActivityScope
 import athila.kforecast.forecast.core.ForecastContract
 import athila.kforecast.forecast.core.ForecastView
 import dagger.Module
@@ -10,6 +11,6 @@ import dagger.Provides
 class ForecastModule(val context: Context) {
 
   @Provides
-  @ForecastScope
+  @ActivityScope
   fun provideForecastView(): ForecastContract.View = ForecastView(context)
 }
