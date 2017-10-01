@@ -15,7 +15,7 @@
       android:theme="@style/KForecastTheme">
 
      <activity
-         android:name=".forecast.ForecastActivity"
+         android:name=".screens.forecast.ForecastActivity"
          android:theme="@style/KForecastTheme.NoActionBar">
        <intent-filter>
          <action android:name="android.intent.action.MAIN"/>

@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.2"
+  compileSdkVersion 26
+  buildToolsVersion "26.0.2"
   defaultConfig {
     applicationId "athila.kforecast"
     minSdkVersion 15
-    targetSdkVersion 25
+    targetSdkVersion 26
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -31,36 +30,40 @@ kapt {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  androidTestImplementation("com.android.support.test.espresso:espresso-core:$espressoVersion", {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-  compile 'com.android.support:appcompat-v7:25.4.0'
-  testCompile 'junit:junit:4.12'
-  compile 'com.android.support.constraint:constraint-layout:1.0.2'
-  compile 'com.android.support:design:25.4.0'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+  testImplementation "junit:junit:$junitVersion"
+  implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
+  implementation "com.android.support:design:$supportLibraryVersion"
 
   // Retrofit
-  compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
-  compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
-  compile("com.squareup.retrofit2:retrofit:$retrofitVersion") {
+  implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+  implementation("com.squareup.retrofit2:retrofit:$retrofitVersion") {
     // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
     exclude module: 'okhttp'
   }
-  compile "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-  //  compile "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-  compile "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+  implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+  implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+
+  implementation "android.arch.lifecycle:extensions:$lifecycleComponentsVersion"
+  implementation "android.arch.lifecycle:reactivestreams:$lifecycleComponentsVersion"
+  kapt "android.arch.lifecycle:compiler:$lifecycleComponentsVersion"
 
   // Room
-  compile "android.arch.persistence.room:runtime:1.0.0-alpha5"
-  kapt "android.arch.persistence.room:compiler:1.0.0-alpha5"
+  implementation "android.arch.persistence.room:runtime:$roomVersion"
+  implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+  kapt "android.arch.persistence.room:compiler:$roomVersion"
 
-  // RxJava
-  compile 'io.reactivex.rxjava2:rxkotlin:2.0.3'
-  compile 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0'
+  // RxKotlin
+  implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion"
+  implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxbindingVersion"
 
   // Dagger
-  compile 'com.google.dagger:dagger:2.8'
-  kapt 'com.google.dagger:dagger-compiler:2.8'
+  implementation "com.google.dagger:dagger:$dagger2Version"
+  kapt "com.google.dagger:dagger-compiler:$dagger2Version"
 }
