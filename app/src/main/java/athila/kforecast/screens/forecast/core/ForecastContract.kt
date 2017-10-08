@@ -1,9 +1,12 @@
 package athila.kforecast.screens.forecast.core
 
+import android.arch.lifecycle.LiveData
+import athila.kforecast.app.common.Result
 import athila.kforecast.app.database.entity.Forecast
 import athila.kforecast.screens.common.BaseAdapterPresenter
 import athila.kforecast.screens.common.BasePresenterContract
 import athila.kforecast.screens.common.BaseViewContract
+import athila.kforecast.screens.forecast.core.usecase.GetForecastUseCase
 import io.reactivex.Observable
 
 
@@ -29,5 +32,9 @@ interface ForecastContract {
     fun summary(summary: String)
     fun maxTemperature(maxTemperature: Double)
     fun minTemperature(minTemperature: Double)
+  }
+
+  interface ViewModel {
+    fun getForecast(params: GetForecastUseCase.GetForecastParams): LiveData<Result<Forecast>>
   }
 }

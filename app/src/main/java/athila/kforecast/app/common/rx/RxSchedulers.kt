@@ -1,6 +1,6 @@
 package athila.kforecast.app.common.rx
 
-import io.reactivex.ObservableTransformer
+import io.reactivex.FlowableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -14,8 +14,8 @@ object RxSchedulers {
 
    * @return the transformer properly configured
    */
-  fun <T> applyDefaultSchedulers(): ObservableTransformer<T, T> {
-    return ObservableTransformer {
+  fun <T> applyDefaultSchedulers(): FlowableTransformer<T, T> {
+    return FlowableTransformer {
       it.subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
     }
@@ -27,8 +27,8 @@ object RxSchedulers {
 
    * @return the transformer properly configured
    */
-  fun <T> applyImmediateSchedulers(): ObservableTransformer<T, T> {
-    return ObservableTransformer {
+  fun <T> applyImmediateSchedulers(): FlowableTransformer<T, T> {
+    return FlowableTransformer {
       it.subscribeOn(Schedulers.trampoline())
           .observeOn(Schedulers.trampoline())
     }

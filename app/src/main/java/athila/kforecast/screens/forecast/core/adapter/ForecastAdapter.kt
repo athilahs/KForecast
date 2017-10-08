@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import athila.kforecast.R
+import athila.kforecast.app.database.entity.Forecast
 import athila.kforecast.screens.forecast.core.ForecastContract.AdapterPresenter
 
 class ForecastAdapter(private val mPresenter: AdapterPresenter) : RecyclerView.Adapter<ForecastViewHolder>() {
@@ -27,6 +28,6 @@ class ForecastAdapter(private val mPresenter: AdapterPresenter) : RecyclerView.A
   }
 
   override fun getItemCount(): Int {
-    return forecast?.getDailyForecasts()?.size ?: 0
+    return forecast?.daily?.data?.size ?: 0
   }
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import athila.kforecast.R
+import athila.kforecast.app.database.entity.Forecast
 import athila.kforecast.app.extensions.bindView
 import athila.kforecast.screens.common.BaseView
 import athila.kforecast.screens.forecast.core.adapter.ForecastAdapter
