@@ -1,6 +1,7 @@
 package athila.kforecast.screens.forecast.api
 
 import athila.kforecast.app.api.ApiConstants
+import athila.kforecast.app.database.entity.Forecast
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path

@@ -5,17 +5,22 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.ForeignKey.CASCADE
 import android.arch.persistence.room.PrimaryKey
+import android.arch.persistence.room.TypeConverter
+import android.arch.persistence.room.TypeConverters
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-@Entity
+@Entity(tableName = Forecast.TABLE_NAME)
+@TypeConverters(DataPointsConverter::class)
 data class Forecast(
     @PrimaryKey(autoGenerate = true) var uid: Long = 0,
     @ForeignKey(entity = City::class, parentColumns = arrayOf("uid"), childColumns = arrayOf("cityId"), onDelete = CASCADE)
     var cityId: Long = 0,
-    val timezone: String?,
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
-    @Embedded val currently: DataPoint?,
-    @Embedded val daily: DailyForecast?) {
+    var timezone: String? = "",
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0,
+    @Embedded(prefix = "currently_") var currently: DataPoint? = null,
+    @Embedded(prefix = "daily_") var daily: DailyForecast? = null) {
 
   companion object {
     const val TABLE_NAME = "forecasts"
@@ -23,14 +28,33 @@ data class Forecast(
 }
 
 data class DailyForecast(
-    val summary: String?,
-    val icon: String?,
-    val data: List<DataPoint>?)
+    var summary: String? = "",
+    var icon: String? = "",
+    var data: List<DataPoint>? = null
+//    var data: DataPoints? = null
+)
 
 data class DataPoint(
-    val time: Long = 0,
-    val summary: String?,
-    val icon: String?,
-    val temperatureMin: Double,
-    val temperatureMax: Double,
-    val temperature: Double)
+    var time: Long = 0,
+    var summary: String? = "",
+    var icon: String? = null,
+    var temperatureMin: Double = 0.0,
+    var temperatureMax: Double = 0.0,
+    var temperature: Double = 0.0)
+
+//data class DataPoints(var data: List<DataPoint>)
+
+class DataPointsConverter {
+  @TypeConverter
+  fun jsonToDataPoints(dataPointsJson: String): List<DataPoint> {
+    val listType = object : TypeToken<List<DataPoint>>() {}.type
+
+    return Gson().fromJson<List<DataPoint>>(dataPointsJson,listType)
+  }
+
+  @TypeConverter
+  fun dataPointsToJson(dataPoints: List<DataPoint>): String {
+    val listType = object : TypeToken<List<DataPoint>>() {}.type
+    return Gson().toJson(dataPoints, listType)
+  }
+}

@@ -10,11 +10,13 @@ import io.reactivex.Flowable
 
 @Dao
 interface ForecastDao {
+  // TODO: as per the bug https://issuetracker.google.com/issues/38494840 kapt doesn't keep parameter names properly
+  // TODO: fix this when it' fixed on kotlin
   @Query("select * from " + Forecast.TABLE_NAME + " WHERE cityId = :cityId")
   fun forecastForCity(cityId: Long): Flowable<Forecast>
 
   @Query("select * from " + Forecast.TABLE_NAME)
-  fun getAllForecasts(cityId: Long): Flowable<List<Forecast>>
+  fun getAllForecasts(): Flowable<List<Forecast>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertForecast(forecast: Forecast)

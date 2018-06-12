@@ -8,7 +8,7 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
 
-class ForecastListPresenter : ForecastContract.AdapterPresenter {
+class ForecastAdapterPresenter : ForecastContract.AdapterPresenter {
   private var mForecast: Forecast? = null
 
   override fun itemsCount(): Int = mForecast?.daily?.data?.size ?: 0

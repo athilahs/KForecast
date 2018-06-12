@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion 26
-  buildToolsVersion "26.0.2"
+  buildToolsVersion '27.0.3'
   defaultConfig {
     applicationId "athila.kforecast"
     minSdkVersion 15
@@ -62,6 +63,9 @@ dependencies {
   // RxKotlin
   implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion"
   implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxbindingVersion"
+
+  // GSON
+  implementation "com.google.code.gson:gson:$gsonVersion"
 
   // Dagger
   implementation "com.google.dagger:dagger:$dagger2Version"

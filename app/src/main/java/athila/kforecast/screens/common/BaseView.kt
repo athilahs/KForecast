@@ -8,7 +8,7 @@ import java.net.UnknownHostException
 
 abstract class BaseView(context: Context) : CoordinatorLayout(context), BasicErrorsHandlerView {
 
-  override fun handleBasicError(error: Throwable): Boolean {
+  override fun handleBasicError(error: Throwable?): Boolean {
     val errorMessage = Snackbar.make(this, R.string.error_generic, Snackbar.LENGTH_LONG)
     if (error is UnknownHostException) {
       errorMessage.setText(R.string.error_no_internet_connection)

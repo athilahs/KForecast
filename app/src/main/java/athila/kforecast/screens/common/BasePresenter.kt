@@ -8,7 +8,7 @@ import android.support.annotation.VisibleForTesting
 abstract class BasePresenter {
 
   @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-  fun handleBasicError(view: BaseViewContract, error: Throwable): Boolean {
+  fun handleBasicError(view: BaseViewContract, error: Throwable? = null): Boolean {
     return view is BasicErrorsHandlerView && view.handleBasicError(error)
   }
 }

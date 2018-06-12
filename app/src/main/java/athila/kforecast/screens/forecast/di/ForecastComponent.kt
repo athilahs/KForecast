@@ -7,8 +7,7 @@ import dagger.Component
 
 @ActivityScope
 @Component(dependencies = arrayOf(ApplicationComponent::class), modules = arrayOf(
-    ForecastModule::class,
-    ForecastListModule::class))
+    ForecastModule::class))
 interface ForecastComponent {
 
   fun inject(forecastActivity: ForecastActivity)

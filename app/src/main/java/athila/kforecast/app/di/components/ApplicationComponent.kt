@@ -1,6 +1,6 @@
 package athila.kforecast.app.di.components
 
-import athila.kforecast.app.KForecastApplication
+import android.app.Application
 import athila.kforecast.app.database.dao.CityDao
 import athila.kforecast.app.database.dao.ForecastDao
 import athila.kforecast.app.di.modules.ApplicationModule
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
 
   // expose to sub graphs
-  fun application(): KForecastApplication
+  fun application(): Application
 
   // APIs
   fun forecastApi(): ForecastApi

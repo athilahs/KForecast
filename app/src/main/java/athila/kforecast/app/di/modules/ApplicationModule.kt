@@ -1,14 +1,14 @@
 package athila.kforecast.app.di.modules
 
-import athila.kforecast.app.KForecastApplication
+import android.app.Application
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: KForecastApplication) {
+class ApplicationModule(private val application: Application) {
 
   @Provides
   @Singleton
-  fun provideApplication(): KForecastApplication = application
+  fun provideApplication(): Application = application
 }
