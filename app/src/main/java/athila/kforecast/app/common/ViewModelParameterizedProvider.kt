@@ -33,16 +33,13 @@ class ViewModelParameterizedProvider {
     }
 
 
-    fun with(constructorParams: Array<out Any>) = ViewModelProvider(viewModelStore, parametrizedFactory(constructorParams))
+    fun with(constructorParams: Array<out Any>) = ViewModelProvider(viewModelStore!!, parametrizedFactory(constructorParams))
 
     private fun parametrizedFactory(constructorParams: Array<out Any>) = ParametrizedFactory(constructorParams)
   }
 
   class ParametrizedFactory(private var constructorParams: Array<out Any>) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>?): T {
-      if (modelClass == null) {
-        throw IllegalArgumentException("Target ViewModel class can not be null")
-      }
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
       Log.w("ParametrizedFactory", "Don't use callbacks or Context as parameters in order to avoid leaks!!")
       return when (constructorParams.size) {
         0 -> {

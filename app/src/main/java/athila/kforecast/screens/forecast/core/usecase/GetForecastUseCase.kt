@@ -12,13 +12,13 @@ class GetForecastUseCase(private val forecastDao: ForecastDao) : ExecutableUseCa
 
 
   override fun buildUseCaseObservable(params: GetForecastParams?): Flowable<Forecast> {
-    return if (params == null) {
+    return if (params?.city == null) {
       Flowable.error(IllegalArgumentException("Please, supply the city to get a forecast"))
     } else {
       forecastDao.forecastForCity(params.city.uid)
     }
   }
 
-  class GetForecastParams(val city: City)
+  class GetForecastParams(val city: City?)
 
 }

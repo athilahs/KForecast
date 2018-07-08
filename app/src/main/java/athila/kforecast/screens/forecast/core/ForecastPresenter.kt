@@ -21,13 +21,13 @@ class ForecastPresenter(
 
   private fun subscribeToCitiesSelection() {
     forecastView.observeCityChanges()
-        .subscribe({ city ->
+        .subscribe { city ->
           if (city == null) {
             forecastView.showEmptyView()
           } else {
             forecastViewModel.switchCity(GetForecastParams(city))
           }
-        })
+        }
   }
 
   private fun initCities() {
