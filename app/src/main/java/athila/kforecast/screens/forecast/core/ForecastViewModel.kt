@@ -1,45 +1,64 @@
 package athila.kforecast.screens.forecast.core
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
-import athila.kforecast.app.common.Result
-import athila.kforecast.app.common.rx.RxSchedulers
+import android.arch.lifecycle.Transformations
+import android.util.Log
+import athila.kforecast.app.common.AbsentLiveData
+import athila.kforecast.app.common.Resource
 import athila.kforecast.app.database.entity.City
 import athila.kforecast.app.database.entity.Forecast
 import athila.kforecast.screens.common.BaseViewModel
-import athila.kforecast.screens.common.usecase.GetCitiesUseCase
-import athila.kforecast.screens.common.usecase.InsertCityUseCase
-import athila.kforecast.screens.common.usecase.InsertCityUseCase.InsertCityParam
-import athila.kforecast.screens.forecast.core.usecase.GetForecastUseCase
-import athila.kforecast.screens.forecast.core.usecase.GetForecastUseCase.GetForecastParams
+import athila.kforecast.screens.common.repository.CitiesRepository
+import athila.kforecast.screens.forecast.repository.ForecastRepository
+import kotlinx.coroutines.launch
 import java.util.Random
+import javax.inject.Inject
 
-class ForecastViewModel(private val getForecastUseCase: GetForecastUseCase,
-    private val getCitiesUseCase: GetCitiesUseCase,
-    private val insertCityUseCase: InsertCityUseCase) : BaseViewModel(), ForecastContract.ViewModel {
+class ForecastViewModel @Inject constructor(private val forecastRepository: ForecastRepository,
+    private val citiesRepository: CitiesRepository) : BaseViewModel(),
+    ForecastContract.ViewModel {
 
-  private var forecastLiveData: MutableLiveData<Result<Forecast>>? = null
+  // initialized with null emission
+  override var forecastLiveData: LiveData<Resource<Forecast>> = AbsentLiveData.create()
 
-  override fun getCurrentForecast(params: GetForecastUseCase.GetForecastParams): LiveData<Result<Forecast>> {
-    if (forecastLiveData == null) {
-      forecastLiveData = MutableLiveData()
-      executeGetForecast(params)
+  // TODO: implement logic similar to the forecast in cities repo when getting cities from remote source is available
+  private val _citiesLiveData: MediatorLiveData<List<City>> = MediatorLiveData()
+
+  override val citiesLiveData: LiveData<List<City>> = _citiesLiveData
+  private val _selectedCity: MutableLiveData<City> = MutableLiveData()
+
+  init {
+    launch {
+      _citiesLiveData.addSource(citiesRepository.getCities()) {
+        _citiesLiveData.value = it
+      }
     }
 
-    return forecastLiveData as LiveData<Result<Forecast>>
-  }
-
-  override fun switchCity(params: GetForecastParams) {
-    if (forecastLiveData != null) {
-      getForecastUseCase.dispose()
-      executeGetForecast(params)
+    forecastLiveData = Transformations.switchMap(_selectedCity) {
+      Log.e("ATHILA", "ATHILA - switchMap function called. selectedCity = $it")
+      it?.apply {
+        launch {
+          forecastRepository.getForecast(this@apply)
+        }
+      }
+      forecastRepository.forecastForCityLiveData
     }
   }
 
-  override fun getCities(): LiveData<Result<List<City>>> {
-    return getCitiesUseCase.getAsLive(onSubscribe = { s -> addSubscription(s) },
-        transformer = RxSchedulers.applyDefaultSchedulers())
+  override fun setSelectedCity(city: City) {
+    if (_selectedCity.value != city) {
+      _selectedCity.value = city
+    }
   }
+
+  override fun refreshForecast() {
+    _selectedCity.value?.let {
+      launch { forecastRepository.fetchForecast(it) }
+    }
+  }
+
 
   // Test
   override fun insertRandomCity() {
@@ -52,21 +71,16 @@ class ForecastViewModel(private val getForecastUseCase: GetForecastUseCase,
     val randomLatitude = minLatitude + (maxLatitude - minLatitude) * r.nextDouble()
     val randomLongitude = minLongitude + (maxLongitude - minLongitude) * r.nextDouble()
 
-    val randomCity = City(name = "Rand ($randomLatitude, $randomLongitude)", latitude = randomLatitude,
+    val randomInt = (0..500).random()
+    val randomCity = City(name = "Rand ($randomInt)", latitude = randomLatitude,
         longitude = randomLongitude)
 
-    insertCityUseCase.execute(InsertCityParam(randomCity), transformer = RxSchedulers.applyDefaultSchedulers())
+    launch {
+      val inserted = citiesRepository.insertCity(randomCity)
+      println("ES!! $inserted")
+    }
   }
-
-  private fun executeGetForecast(params: GetForecastParams) {
-    getForecastUseCase.execute(params = params,
-        onNext = { forecast ->
-          forecastLiveData?.value = Result.success(forecast)
-        },
-        onError = { throwable ->
-          forecastLiveData?.value = Result.error(throwable = throwable)
-        },
-        transformer = RxSchedulers.applyDefaultSchedulers())
-  }
-
 }
+
+fun ClosedRange<Int>.random() =
+    Random().nextInt((endInclusive + 1) - start) + start

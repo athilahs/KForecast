@@ -56,10 +56,10 @@ class ForecastViewHolder(forecastItemView: View) : RecyclerView.ViewHolder(forec
   }
 
   override fun maxTemperature(maxTemperature: Double) {
-    forecastItemTemperatureMax.text = itemView.context.getString(R.string.temperature, maxTemperature)
+    forecastItemTemperatureMax.text = itemView.context.getString(R.string.temperature, maxTemperature.toString())
   }
 
   override fun minTemperature(minTemperature: Double) {
-    forecastItemTemperatureMin.text = itemView.context.getString(R.string.temperature, minTemperature)
+    forecastItemTemperatureMin.text = itemView.context.getString(R.string.temperature, minTemperature.toString())
   }
 }

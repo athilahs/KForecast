@@ -4,6 +4,7 @@ import android.app.Application
 import athila.kforecast.app.di.components.ApplicationComponent
 import athila.kforecast.app.di.components.DaggerApplicationComponent
 import athila.kforecast.app.di.modules.ApplicationModule
+import com.facebook.stetho.Stetho
 
 class KForecastApplication : Application() {
 
@@ -13,6 +14,7 @@ class KForecastApplication : Application() {
     super.onCreate()
 
     initializeInjector()
+    Stetho.initializeWithDefaults(this);
   }
 
   private fun initializeInjector() {

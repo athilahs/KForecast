@@ -1,22 +1,20 @@
 package athila.kforecast.app.database.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import athila.kforecast.app.database.entity.Forecast
-import io.reactivex.Flowable
 
 @Dao
 interface ForecastDao {
-  // TODO: as per the bug https://issuetracker.google.com/issues/38494840 kapt doesn't keep parameter names properly
-  // TODO: fix this when it' fixed on kotlin
   @Query("select * from " + Forecast.TABLE_NAME + " WHERE cityId = :cityId")
-  fun forecastForCity(cityId: Long): Flowable<Forecast>
+  fun forecastForCity(cityId: Long): LiveData<Forecast>
 
   @Query("select * from " + Forecast.TABLE_NAME)
-  fun getAllForecasts(): Flowable<List<Forecast>>
+  fun getAllForecasts(): LiveData<List<Forecast>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertForecast(forecast: Forecast)

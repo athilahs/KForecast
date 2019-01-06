@@ -1,0 +1,44 @@
+1 - Create a parent job for each viewmodel (inject it through dagger or create it manually). Use this job to cancel all coroutines
+ in the presenter
+
+2 - For dialogs, use https://medium.com/@andrea.bresolin/playing-with-kotlin-in-android-coroutines-and-how-to-get-rid-of-the-callback-hell-a96e817c108b
+
+3 - For the UseCases, should we use asyncAwait to return the actual value or just switch to another context and return an
+Deferred?
+
+[6 - Aug]
+1 - Remove UseCases layer and create a repository layer containing suspending functions using 'withContext' methods
+2 - "Domain" layer will contain only converters from models from data layer to UI models
+3 - Presenters will still exist to make possible usage of coroutines to show dialogs and snackbars like the previous item
+
+
+[12 - Aug]
+The combo box behavior of the view causes a problem when using DAO returning LiveData. We need to keep a single LiveData
+(MutableLiveData) in the viewmodel, so we dont leak subscriptions from the view. But when the user switches the city using the
+spinner in the view, we need to make a new query, which would return a new LiveData.
+To fix this, we could either manage the observers on the current livedata manually or stop using LiveDatas as return from the DAOs
+ (we should create the livedatas on the viewmodel as MutableLiveData)
+ ===> Fixed using MediatorLiveData
+
+
+[9-Sep] The NetworkBoundResource implementation recommended by Google (https://github
+.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src/main/java/com/android/example/github
+/repository/NetworkBoundResource.kt) is a bit overwhelming. I need to find a way to implement my own version of it.
+Plan:
+1) Separate data from status by having 2 LiveDatas on the NetworkBoundResource class
+2) Upper layers would put both together using MediatorLiveData
+3) Change multithreading approach by adding coroutines to it
+4) Challenge: How to create LiveData from the network call using the current architecture? Google uses a CallAdapter to convert
+Call objects to LiveData (https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample/app/src
+/main/java/com/android/example/github/util/LiveDataCallAdapter.kt). Is there a way to make this to work with the .await extension
+function created on the Call object?
+
+[23-Sep] replace the executor stuff from the NetworkBoundResource class with corotines (a launch is enough here). We won't support
+ cancellation for NetowrkBoundResources. Copy the Adapter implementation from the GitHubBrowserSample sample from Android
+ Architecture sample. This will convert retrofit responses into LiveData
+. Also, create a ApiResponse class like in their example since LiveData has only one callback method which will emit the same
+object containing either a success or an error.
+- Keep the current extension function for the Call objects. It will be used for calls that don't need local cache (bound resource)
+
+
+

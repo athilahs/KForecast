@@ -9,30 +9,38 @@ import android.widget.TextView
 import athila.kforecast.R
 import athila.kforecast.app.database.entity.City
 
-class CitiesSpinnerAdapter(context: Context) : ArrayAdapter<City>(context, R.layout.cities_spinner_row) {
+class CitiesSpinnerAdapter(context: Context) : ArrayAdapter<City>(context, R.layout.cities_spinner) {
 
-  private val cities: MutableList<City> = mutableListOf()
+  //  private val cities: MutableList<City> = mutableListOf()
+  init {
+    // notify changes manually as we want to clear the list and re-add them before notifying
+    setNotifyOnChange(false)
+  }
 
   fun setCities(cities: List<City>?) {
-    this.cities.let {
-      clear()
-      if (cities != null) {
-        addAll(cities)
-      }
-    }
+    clear()
+    addAll(cities)
     notifyDataSetChanged()
   }
 
   override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    return getViewWithLayout(position, convertView, parent, R.layout.cities_spinner)
+  }
+
+  override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+    return getViewWithLayout(position, convertView, parent, R.layout.cities_spinner_dropdown_row)
+  }
+
+  private fun getViewWithLayout(position: Int, convertView: View?, parent: ViewGroup, layoutResId: Int): View {
     val view: View
     val viewHolder: ViewHolder
     // Get the data item for this position
-    val city = cities[position]
+    val city = getItem(position)
     if (convertView == null) {
       viewHolder = ViewHolder()
       val inflater = LayoutInflater.from(context)
-      view = inflater.inflate(R.layout.cities_spinner_row, parent, false)
-      viewHolder.cityName = view.findViewById<TextView>(R.id.cities_spinner_city_name) as TextView
+      view = inflater.inflate(layoutResId, parent, false)
+      viewHolder.cityName = view.findViewById(R.id.cities_spinner_city_name) as TextView
       view.tag = viewHolder
     } else {
       view = convertView
@@ -41,10 +49,6 @@ class CitiesSpinnerAdapter(context: Context) : ArrayAdapter<City>(context, R.lay
 
     viewHolder.cityName.text = city.name
     return view
-  }
-
-  override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-    return getView(position, convertView, parent)
   }
 
   private class ViewHolder {

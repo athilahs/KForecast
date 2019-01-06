@@ -3,12 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion '27.0.3'
+  compileSdkVersion 28
   defaultConfig {
     applicationId "athila.kforecast"
     minSdkVersion 15
-    targetSdkVersion 26
+    targetSdkVersion 28
     versionCode 1
     versionName "1.0"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,7 +34,7 @@ dependencies {
   androidTestImplementation("com.android.support.test.espresso:espresso-core:$espressoVersion", {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
   testImplementation "junit:junit:$junitVersion"
   implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
@@ -49,20 +48,17 @@ dependencies {
     exclude module: 'okhttp'
   }
   implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-  implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
   implementation "android.arch.lifecycle:extensions:$lifecycleComponentsVersion"
-  implementation "android.arch.lifecycle:reactivestreams:$lifecycleComponentsVersion"
   kapt "android.arch.lifecycle:compiler:$lifecycleComponentsVersion"
 
   // Room
   implementation "android.arch.persistence.room:runtime:$roomVersion"
-  implementation "android.arch.persistence.room:rxjava2:$roomVersion"
   kapt "android.arch.persistence.room:compiler:$roomVersion"
 
   // RxKotlin
-  implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion"
-  implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxbindingVersion"
+  //  implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlinVersion"
+  //  implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxbindingVersion"
 
   // GSON
   implementation "com.google.code.gson:gson:$gsonVersion"
@@ -70,4 +66,10 @@ dependencies {
   // Dagger
   implementation "com.google.dagger:dagger:$dagger2Version"
   kapt "com.google.dagger:dagger-compiler:$dagger2Version"
+
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+  //  debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+  implementation 'com.facebook.stetho:stetho:1.5.0'
 }

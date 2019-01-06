@@ -7,7 +7,7 @@ import athila.kforecast.app.database.dao.ForecastDao
 import athila.kforecast.app.database.entity.City
 import athila.kforecast.app.database.entity.Forecast
 
-@Database(entities = arrayOf(City::class, Forecast::class), version = 1, exportSchema = false)
+@Database(entities = [City::class, Forecast::class], version = 1, exportSchema = false)
 abstract class KForecastDatabase : RoomDatabase() {
 
   abstract fun cityDao(): CityDao

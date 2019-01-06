@@ -9,7 +9,7 @@
   <string name="content_description_current_conditions">Current conditions</string>
   <string name="current_conditions">Current Conditions</string>
   <string name="forecast_icon">Forecast icon</string>
-  <string name="temperature">%1$d&#xb0;</string>
+  <string name="temperature">%1$s C</string>
   <string name="content_description_refresh_button">Refresh button</string>
 
   <string name="city_london">London</string>

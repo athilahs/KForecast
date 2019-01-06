@@ -1,14 +1,14 @@
 <resources>
 
   <!-- Base application theme. -->
-  <style name="KForecastTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="KForecastTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="android:colorBackground">@color/colorBackground</item>
-    <item name="android:windowBackground">@color/material_blue_grey_800</item>
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <item name="colorAccent">@color/accent</item>
     <item name="windowActionModeOverlay">true</item>
+    <item name="android:textColorPrimary">@color/primary_text</item>
+    <item name="android:textColorSecondary">@color/secondary_text</item>
   </style>
 
   <style name="KForecastTheme.NoActionBar">
@@ -19,5 +19,4 @@
   <style name="KForecastTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
   <style name="KForecastTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
 </resources>

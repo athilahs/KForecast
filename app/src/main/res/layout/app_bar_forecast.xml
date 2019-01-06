@@ -9,66 +9,90 @@
     tools:context=".screens.forecast.ForecastActivity"
     >
 
-  <android.support.design.widget.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:theme="@style/KForecastTheme.AppBarOverlay"
-      >
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/KForecastTheme.PopupOverlay"
-        >
-
-      <RelativeLayout
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          >
-
-        <Spinner
-            android:id="@+id/forecast_screen_app_bar_spinner_cities"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            />
-
-        <android.support.v4.widget.ContentLoadingProgressBar
-            android:id="@+id/forecast_screen_app_bar_progress"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:visibility="invisible"
-            style="?android:attr/android:progressBarStyle"
-            />
-
-        <ImageView
-            android:id="@+id/forecast_screen_app_bar_button_refresh"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/content_description_refresh_button"
-            app:srcCompat="@drawable/ic_refresh_forecast"
-            tools:ignore="MissingPrefix"
-            />
-      </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
-  </android.support.design.widget.AppBarLayout>
-
-  <include
-      layout="@layout/forecast_content"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      />
+      android:orientation="vertical"
+      >
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/KForecastTheme.AppBarOverlay"
+        >
+
+      <android.support.v7.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="?attr/colorPrimary"
+          app:popupTheme="@style/KForecastTheme.PopupOverlay"
+          >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            >
+
+          <Spinner
+              android:id="@+id/forecast_screen_app_bar_spinner_cities"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+              app:popupTheme="@style/KForecastTheme.PopupOverlay"
+              tools:listitem="@layout/cities_spinner"
+              />
+
+          <android.support.v4.widget.ContentLoadingProgressBar
+              android:id="@+id/forecast_screen_app_bar_progress"
+              android:layout_width="32dp"
+              android:layout_height="32dp"
+              android:layout_alignParentEnd="true"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:layout_marginEnd="20dp"
+              android:layout_marginRight="20dp"
+              android:visibility="invisible"
+              style="?android:attr/android:progressBarStyle"
+              />
+
+          <ImageView
+              android:id="@+id/forecast_screen_app_bar_button_refresh"
+              android:layout_width="32dp"
+              android:layout_height="32dp"
+              android:layout_alignParentEnd="true"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:layout_marginEnd="20dp"
+              android:layout_marginRight="20dp"
+              android:contentDescription="@string/content_description_refresh_button"
+              android:tint="@color/icons"
+              app:srcCompat="@drawable/ic_refresh_forecast"
+              tools:ignore="MissingPrefix"
+              />
+
+          <ImageView
+              android:id="@+id/forecast_screen_app_bar_button_add"
+              android:layout_width="32dp"
+              android:layout_height="32dp"
+              android:layout_centerVertical="true"
+              android:layout_marginEnd="20dp"
+              android:layout_marginRight="20dp"
+              android:layout_toLeftOf="@+id/forecast_screen_app_bar_button_refresh"
+              android:layout_toStartOf="@+id/forecast_screen_app_bar_button_refresh"
+              android:tint="@color/icons"
+              app:srcCompat="@android:drawable/ic_menu_add"
+              tools:ignore="MissingPrefix"
+              />
+        </RelativeLayout>
+      </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <include
+        layout="@layout/forecast_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+  </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

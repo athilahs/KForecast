@@ -26,6 +26,9 @@ class ForecastActivity : AppCompatActivity() {
         .inject(this)
 
     setContentView(forecastView.getView())
+
+    forecastView.setPresenter(forecastPresenter)
+    forecastPresenter.onCreate(savedInstanceState)
   }
 
   override fun onStart() {

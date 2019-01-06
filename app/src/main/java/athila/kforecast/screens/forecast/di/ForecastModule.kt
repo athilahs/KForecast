@@ -1,9 +1,13 @@
 package athila.kforecast.screens.forecast.di
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.app.FragmentActivity
-import athila.kforecast.app.common.ViewModelParameterizedProvider
 import athila.kforecast.app.database.dao.ForecastDao
 import athila.kforecast.app.di.ActivityScope
+import athila.kforecast.app.di.modules.ViewModelModule
+import athila.kforecast.screens.common.repository.CitiesRepository
+import athila.kforecast.screens.forecast.api.ForecastApi
 import athila.kforecast.screens.forecast.core.ForecastContract
 import athila.kforecast.screens.forecast.core.ForecastPresenter
 import athila.kforecast.screens.forecast.core.ForecastView
@@ -11,11 +15,12 @@ import athila.kforecast.screens.forecast.core.ForecastViewModel
 import athila.kforecast.screens.forecast.core.adapter.CitiesSpinnerAdapter
 import athila.kforecast.screens.forecast.core.adapter.ForecastAdapter
 import athila.kforecast.screens.forecast.core.adapter.ForecastAdapterPresenter
-import athila.kforecast.screens.forecast.core.usecase.GetForecastUseCase
+import athila.kforecast.screens.forecast.repository.DefaultForecastRepository
+import athila.kforecast.screens.forecast.repository.ForecastRepository
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module(includes = [ViewModelModule::class])
 class ForecastModule(private val activity: FragmentActivity) {
 
   @Provides
@@ -26,22 +31,20 @@ class ForecastModule(private val activity: FragmentActivity) {
 
   @Provides
   @ActivityScope
-  fun provideForecastViewModel(getForecastUseCase: GetForecastUseCase): ForecastContract.ViewModel {
-    return ViewModelParameterizedProvider
-        .of(activity)
-        .with(arrayOf(getForecastUseCase))
-        .get(ForecastViewModel::class.java)
+  fun provideForecastViewModel(factory: ViewModelProvider.Factory): ForecastContract.ViewModel {
+    return ViewModelProviders.of(activity, factory).get(ForecastViewModel::class.java)
   }
 
   @Provides
   @ActivityScope
-  fun provideGetForecastUsecase(forecastDao: ForecastDao): GetForecastUseCase = GetForecastUseCase(forecastDao)
+  fun provideForecastRepository(forecastApi: ForecastApi, forecastDao: ForecastDao): ForecastRepository =
+      DefaultForecastRepository(forecastApi, forecastDao)
 
   @Provides
   @ActivityScope
   fun provideForecastPresenter(forecastView: ForecastContract.View,
-      forecastViewModel: ForecastContract.ViewModel): ForecastContract.Presenter {
-    return ForecastPresenter(forecastView, forecastViewModel)
+      forecastViewModel: ForecastContract.ViewModel, testCitiesRepository: CitiesRepository): ForecastContract.Presenter {
+    return ForecastPresenter(forecastView, forecastViewModel, testCitiesRepository)
   }
 
   @Provides

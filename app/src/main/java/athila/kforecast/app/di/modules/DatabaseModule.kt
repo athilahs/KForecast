@@ -13,7 +13,8 @@ class DatabaseModule {
   @Provides
   @Singleton
   fun provideAppDatabase(application: Application): KForecastDatabase {
-    return Room.databaseBuilder(application, KForecastDatabase::class.java, "kforecast.db").build()
+    return Room.databaseBuilder(application, KForecastDatabase::class.java, "kforecast.db")
+        .build()
   }
 
   @Provides
