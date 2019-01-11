@@ -14,16 +14,17 @@ import com.google.gson.reflect.TypeToken
 @Entity(tableName = Forecast.TABLE_NAME)
 @TypeConverters(DataPointsConverter::class)
 data class Forecast @Ignore constructor(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    @PrimaryKey var cityId: Long = 0,
     @ForeignKey(entity = City::class, parentColumns = ["id"], childColumns = ["cityId"], onDelete = CASCADE)
-    var cityId: Long,
     var timezone: String?,
     var latitude: Double,
     var longitude: Double,
+    var updatedAt: Long,
     @Embedded(prefix = "currently_") var currently: DataPoint?,
     @Embedded(prefix = "daily_") var daily: DailyForecast?) {
 
-  constructor() : this(id = 0, cityId = 0, timezone = "", latitude = 0.0, longitude = 0.0, currently = null, daily = null)
+  constructor() : this(cityId = 0, timezone = "", latitude = 0.0, longitude = 0.0, currently = null, daily = null,
+      updatedAt = System.currentTimeMillis())
 
   companion object {
     const val TABLE_NAME = "forecasts"

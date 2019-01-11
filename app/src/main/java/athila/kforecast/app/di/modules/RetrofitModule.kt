@@ -4,6 +4,7 @@ import athila.kforecast.BuildConfig
 import athila.kforecast.app.api.interceptors.BasicHeadersInterceptor
 import athila.kforecast.app.di.FirebaseRetrofit
 import athila.kforecast.app.di.ForecastRetrofit
+import com.android.example.github.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -42,6 +43,7 @@ class RetrofitModule {
   fun provideBaseRetrofitBuilder(okHttpClient: OkHttpClient): Retrofit.Builder {
     return Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(LiveDataCallAdapterFactory())
         .client(okHttpClient)
   }
 

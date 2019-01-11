@@ -4,7 +4,6 @@ import athila.kforecast.app.common.Status.ERROR
 import athila.kforecast.app.common.Status.IDLE
 import athila.kforecast.app.common.Status.LOADING
 import athila.kforecast.app.common.Status.SUCCESS
-import java.util.Optional
 
 
 class Resource<out T> private constructor(val status: Status, val data: T?, val error: Throwable?) {
@@ -28,6 +27,10 @@ class Resource<out T> private constructor(val status: Status, val data: T?, val 
 
     fun <T> error(error: Throwable): Resource<T> {
       return Resource(ERROR, null, error)
+    }
+
+    fun <T> error(error: Throwable, data: T?): Resource<T> {
+      return Resource(ERROR, data, error)
     }
 
     fun <T> loading(data: T?): Resource<T> {

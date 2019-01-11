@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.ContentLoadingProgressBar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -18,6 +19,7 @@ import athila.kforecast.app.database.entity.City
 import athila.kforecast.app.database.entity.Forecast
 import athila.kforecast.app.extensions.bindView
 import athila.kforecast.screens.common.BaseView
+import athila.kforecast.screens.common.widget.RelativeTimeTextView
 import athila.kforecast.screens.forecast.core.ForecastContract.Presenter
 import athila.kforecast.screens.forecast.core.adapter.CitiesSpinnerAdapter
 import athila.kforecast.screens.forecast.core.adapter.ForecastAdapter
@@ -38,6 +40,7 @@ class ForecastView(context: Context, private val forecastAdapter: ForecastAdapte
   private val refreshButton: ImageView by bindView(R.id.forecast_screen_app_bar_button_refresh)
   private val addButton: ImageView by bindView(R.id.forecast_screen_app_bar_button_add)
   private val progressView: ContentLoadingProgressBar by bindView(R.id.forecast_screen_app_bar_progress)
+  private val lastUpdated: RelativeTimeTextView by bindView(R.id.weather_screen_textView_last_updated)
   private val citiesSpinner: Spinner by bindView(R.id.forecast_screen_app_bar_spinner_cities)
 
   init {
@@ -98,6 +101,7 @@ class ForecastView(context: Context, private val forecastAdapter: ForecastAdapte
     currentConditionsSummary.text = currentConditions?.summary
     currentConditionsTemperature.text = context.getString(R.string.temperature, currentConditions?.temperature.toString())
 
+    lastUpdated.setReferenceTime(forecast.updatedAt)
     forecastAdapter.forecast = forecast
   }
 

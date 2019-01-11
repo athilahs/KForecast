@@ -10,6 +10,7 @@ import athila.kforecast.app.common.Status.SUCCESS
 import athila.kforecast.app.database.entity.City
 import athila.kforecast.screens.common.BasePresenter
 import athila.kforecast.screens.common.repository.CitiesRepository
+import java.util.Date
 
 class ForecastPresenter(
     private val forecastView: ForecastContract.View,
@@ -30,12 +31,11 @@ class ForecastPresenter(
   }
 
   private fun initForecast() {
-    Log.e("ATHILA", "ATHILA - presenter observing forecast livedata...")
     forecastViewModel.forecastLiveData
         .observe(forecastView.getLifecycleOwner(),
             Observer { forecast ->
-              Log.e("ATHILA", "ATHILA - new forecast emission to view. status: ${forecast?.status}, ID: ${forecast?.data?.id}, " +
-                  "cityID: ${forecast?.data?.cityId}")
+              Log.e("ATHILA", "new forecast emission to view. status: ${forecast?.status}, " +
+                  "updatedAt: ${Date(forecast?.data?.updatedAt ?: 0)}")
               forecast?.let {
                 // set forecast data if available no matter what status
                 it.data?.apply {

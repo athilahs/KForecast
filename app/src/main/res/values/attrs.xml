@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ValidatableEditText">
-        <attr name="errorMessage" format="string" />
-    </declare-styleable>
+  <declare-styleable name="ValidatableEditText">
+    <attr format="string" name="errorMessage"/>
+  </declare-styleable>
+
+  <declare-styleable name="RelativeTimeTextView">
+    <attr format="string" name="relative_time_prefix"/>
+    <attr format="string" name="relative_time_suffix"/>
+    <attr format="string" name="reference_time"/>
+  </declare-styleable>
 </resources>

@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
-import android.util.Log
 import athila.kforecast.app.common.AbsentLiveData
 import athila.kforecast.app.common.Resource
 import athila.kforecast.app.database.entity.City
@@ -27,9 +26,10 @@ class ForecastViewModel @Inject constructor(private val forecastRepository: Fore
   private val _citiesLiveData: MediatorLiveData<List<City>> = MediatorLiveData()
 
   override val citiesLiveData: LiveData<List<City>> = _citiesLiveData
-  private val _selectedCity: MutableLiveData<City> = MutableLiveData()
+  private val _selectedCity: MutableLiveData<CitySelectionInput> = MutableLiveData()
 
   init {
+    // not needed
     launch {
       _citiesLiveData.addSource(citiesRepository.getCities()) {
         _citiesLiveData.value = it
@@ -37,25 +37,23 @@ class ForecastViewModel @Inject constructor(private val forecastRepository: Fore
     }
 
     forecastLiveData = Transformations.switchMap(_selectedCity) {
-      Log.e("ATHILA", "ATHILA - switchMap function called. selectedCity = $it")
-      it?.apply {
-        launch {
-          forecastRepository.getForecast(this@apply)
-        }
+      if (it != null) {
+        forecastRepository.getForecast(it.selectedCity, it.refresh, this@ForecastViewModel)
+      } else {
+        AbsentLiveData.create()
       }
-      forecastRepository.forecastForCityLiveData
     }
   }
 
   override fun setSelectedCity(city: City) {
-    if (_selectedCity.value != city) {
-      _selectedCity.value = city
+    if (_selectedCity.value?.selectedCity != city) {
+      _selectedCity.value = CitySelectionInput(city)
     }
   }
 
   override fun refreshForecast() {
     _selectedCity.value?.let {
-      launch { forecastRepository.fetchForecast(it) }
+      _selectedCity.value = it.copy(refresh = true)
     }
   }
 
@@ -77,10 +75,11 @@ class ForecastViewModel @Inject constructor(private val forecastRepository: Fore
 
     launch {
       val inserted = citiesRepository.insertCity(randomCity)
-      println("ES!! $inserted")
     }
   }
 }
+
+private data class CitySelectionInput(val selectedCity: City, val refresh: Boolean = false)
 
 fun ClosedRange<Int>.random() =
     Random().nextInt((endInclusive + 1) - start) + start

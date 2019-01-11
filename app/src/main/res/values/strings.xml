@@ -35,10 +35,12 @@
   <string name="cancel">Cancel</string>
   <string name="delete">Delete</string>
   <string name="edit">Edit</string>
-  <string name="forecast_empty_message">There is no city registered. Access the cities list screen from Navigation Drawer and register a new city.</string>
+  <string name="forecast_empty_message">No data available. Please, select a city or try again.</string>
   <string name="cities_list_empty_message">There is no city registered.</string>
+  <string name="label_last_updated">Last updated:</string>
   <plurals name="cities_selected_count">
     <item quantity="one">%1$s city selected</item>
     <item quantity="other">%1$s cities selected</item>
   </plurals>
+  <string name="just_now">Just now</string>
 </resources>

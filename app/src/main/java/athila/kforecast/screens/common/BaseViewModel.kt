@@ -9,7 +9,7 @@ import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel(), CoroutineScope {
-  private val parentJob: Job = Job()
+  protected val parentJob: Job = Job()
 
   // 'launch' coroutines created by the subclasses will use the coroutineContext from this class which is already appending the
   // parent job and, therefore, does not need to be specified
