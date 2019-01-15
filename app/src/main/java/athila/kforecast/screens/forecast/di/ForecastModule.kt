@@ -2,15 +2,14 @@ package athila.kforecast.screens.forecast.di
 
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v4.app.FragmentActivity
 import athila.kforecast.app.database.dao.ForecastDao
-import athila.kforecast.app.di.ActivityScope
+import athila.kforecast.app.di.FragmentScope
 import athila.kforecast.app.di.modules.ViewModelModule
 import athila.kforecast.screens.common.repository.CitiesRepository
 import athila.kforecast.screens.forecast.api.ForecastApi
 import athila.kforecast.screens.forecast.core.ForecastContract
+import athila.kforecast.screens.forecast.core.ForecastFragment
 import athila.kforecast.screens.forecast.core.ForecastPresenter
-import athila.kforecast.screens.forecast.core.ForecastView
 import athila.kforecast.screens.forecast.core.ForecastViewModel
 import athila.kforecast.screens.forecast.core.adapter.CitiesSpinnerAdapter
 import athila.kforecast.screens.forecast.core.adapter.ForecastAdapter
@@ -21,42 +20,40 @@ import dagger.Module
 import dagger.Provides
 
 @Module(includes = [ViewModelModule::class])
-class ForecastModule(private val activity: FragmentActivity) {
+class ForecastModule(private val fragment: ForecastFragment) {
 
   @Provides
-  @ActivityScope
-  fun provideForecastView(forecastAdapter: ForecastAdapter,
-      citiesSpinnerAdapter: CitiesSpinnerAdapter): ForecastContract.View = ForecastView(activity,
-      forecastAdapter, citiesSpinnerAdapter)
+  @FragmentScope
+  fun provideForecastView(): ForecastContract.View = fragment
 
   @Provides
-  @ActivityScope
+  @FragmentScope
   fun provideForecastViewModel(factory: ViewModelProvider.Factory): ForecastContract.ViewModel {
-    return ViewModelProviders.of(activity, factory).get(ForecastViewModel::class.java)
+    return ViewModelProviders.of(fragment, factory).get(ForecastViewModel::class.java)
   }
 
   @Provides
-  @ActivityScope
+  @FragmentScope
   fun provideForecastRepository(forecastApi: ForecastApi, forecastDao: ForecastDao): ForecastRepository =
       DefaultForecastRepository(forecastApi, forecastDao)
 
   @Provides
-  @ActivityScope
+  @FragmentScope
   fun provideForecastPresenter(forecastView: ForecastContract.View,
       forecastViewModel: ForecastContract.ViewModel, testCitiesRepository: CitiesRepository): ForecastContract.Presenter {
     return ForecastPresenter(forecastView, forecastViewModel, testCitiesRepository)
   }
 
   @Provides
-  @ActivityScope
+  @FragmentScope
   fun provideForecastAdapter(forecastAdapterPresenter: ForecastAdapterPresenter): ForecastAdapter = ForecastAdapter(
       forecastAdapterPresenter)
 
   @Provides
-  @ActivityScope
-  fun provideForecastListPresenter(): ForecastAdapterPresenter = ForecastAdapterPresenter()
+  @FragmentScope
+  fun provideForecastAdapterPresenter(): ForecastAdapterPresenter = ForecastAdapterPresenter()
 
   @Provides
-  @ActivityScope
-  fun provideCitiesSpinnerAdapter(): CitiesSpinnerAdapter = CitiesSpinnerAdapter(activity)
+  @FragmentScope
+  fun provideCitiesSpinnerAdapter(): CitiesSpinnerAdapter = CitiesSpinnerAdapter(fragment.context!!)
 }

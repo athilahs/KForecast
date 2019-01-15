@@ -1,7 +1,7 @@
 package athila.kforecast.screens.common.di
 
 import athila.kforecast.app.database.dao.CityDao
-import athila.kforecast.app.di.ActivityScope
+import athila.kforecast.app.di.FragmentScope
 import athila.kforecast.screens.common.repository.CitiesRepository
 import athila.kforecast.screens.common.repository.DefaultCitiesRepository
 import dagger.Module
@@ -11,6 +11,6 @@ import dagger.Provides
 class CitiesRepositoryModule() {
 
   @Provides
-  @ActivityScope
+  @FragmentScope
   fun provideCitiesRepository(citiesDao: CityDao): CitiesRepository = DefaultCitiesRepository(citiesDao)
 }

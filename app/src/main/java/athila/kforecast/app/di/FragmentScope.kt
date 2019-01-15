@@ -6,4 +6,4 @@ import kotlin.annotation.AnnotationRetention.RUNTIME
 @Scope
 @Retention(RUNTIME)
 @MustBeDocumented
-annotation class ActivityScope
+annotation class FragmentScope

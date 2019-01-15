@@ -13,7 +13,7 @@ import athila.kforecast.screens.common.HasLifecycleOwner
 
 interface ForecastContract {
   interface View : BaseViewContract, HasLifecycleOwner {
-    fun setPresenter(presenter: Presenter)
+//    fun setPresenter(presenter: Presenter)
     fun showEmptyView()
     fun setForecast(forecast: Forecast)
     fun showProgress()

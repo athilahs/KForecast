@@ -16,16 +16,14 @@
       android:theme="@style/KForecastTheme"
       tools:ignore="GoogleAppIndexingWarning">
 
-     <activity
-         android:name=".screens.forecast.ForecastActivity"
-         android:theme="@style/KForecastTheme.NoActionBar">
-       <intent-filter>
-         <action android:name="android.intent.action.MAIN"/>
+    <activity android:name=".screens.common.BaseActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
 
 
-         <category android:name="android.intent.category.LAUNCHER"/>
-       </intent-filter>
-     </activity>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
   </application>
 
 </manifest>

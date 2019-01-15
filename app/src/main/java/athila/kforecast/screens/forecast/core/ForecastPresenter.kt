@@ -18,7 +18,7 @@ class ForecastPresenter(
     ForecastContract.Presenter,
     BasePresenter() {
 
-  override fun onCreate(savedInstanceState: Bundle?) {
+  override fun onStart() {
     initCities()
     initForecast()
   }
