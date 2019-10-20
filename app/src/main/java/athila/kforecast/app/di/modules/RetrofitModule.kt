@@ -4,7 +4,7 @@ import athila.kforecast.BuildConfig
 import athila.kforecast.app.api.interceptors.BasicHeadersInterceptor
 import athila.kforecast.app.di.FirebaseRetrofit
 import athila.kforecast.app.di.ForecastRetrofit
-import com.android.example.github.util.LiveDataCallAdapterFactory
+import athila.kforecast.app.common.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
